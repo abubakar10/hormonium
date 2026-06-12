@@ -34,6 +34,34 @@ Your volume, reverb, transpose, and other settings are remembered automatically 
 | White keys | `` ` `` `q` `w` `e` `r` `t` `y` `u` `i` `o` `p` `[` `]` `\` |
 | Black keys | `1` `2` `4` `5` `7` `8` `9` `-` `=` |
 
+## Google AdSense Setup
+
+1. Apply at [Google AdSense](https://www.google.com/adsense/) and get approved
+2. Create **Display ad units** in AdSense:
+   - 2× vertical sidebar units (160×600 or responsive) — left & right
+   - 1× horizontal banner — mobile
+   - 1× horizontal banner — in-content (optional)
+3. Copy `client/.env.example` to `client/.env` and fill in:
+
+```env
+VITE_ADSENSE_CLIENT=ca-pub-XXXXXXXXXXXXXXXX
+VITE_ADSENSE_SLOT_LEFT=1234567890
+VITE_ADSENSE_SLOT_RIGHT=0987654321
+VITE_ADSENSE_SLOT_MOBILE=1111111111
+VITE_ADSENSE_SLOT_FOOTER=2222222222
+```
+
+4. In Netlify → **Site settings → Environment variables** — add the same keys
+5. Copy `client/public/ads.txt.example` to `client/public/ads.txt` with your publisher line
+6. Redeploy
+
+**Ad placements:**
+| Screen | Location |
+|--------|----------|
+| Desktop (1100px+) | Sticky left & right sidebar |
+| Desktop | Banner between controls and FAQ |
+| Mobile | Banner below hero (not over keyboard) |
+
 ## Deploy to Netlify
 
 1. Push this repo to GitHub
