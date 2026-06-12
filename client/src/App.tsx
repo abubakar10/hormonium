@@ -12,12 +12,18 @@ import { MobilePlayBar, type MobileInputMode } from './components/MobilePlayBar'
 import { PianoKeyboard } from './components/PianoKeyboard';
 import { PresetsPanel } from './components/PresetsPanel';
 import { SeoSection } from './components/SeoSection';
+import { SiteFooter } from './components/SiteFooter';
 import { useHarmonium } from './hooks/useHarmonium';
 import { useIsMobile } from './hooks/useIsMobile';
 import { useMidi } from './hooks/useMidi';
+import { usePageRoute } from './hooks/usePageRoute';
+import { ContactPage } from './pages/ContactPage';
+import { PrivacyPage } from './pages/PrivacyPage';
 
 export default function App() {
   const isMobile = useIsMobile();
+  const { page } = usePageRoute();
+  const isLegalPage = page === 'privacy' || page === 'contact';
 
   const {
     settings,
@@ -58,7 +64,7 @@ export default function App() {
 
   const [mobileInputMode, setMobileInputMode] = useState<MobileInputMode>('piano');
   const [mobilePlayBarOpen, setMobilePlayBarOpen] = useState(true);
-  const keyboardFixed = isMobile && loaded && mobilePlayBarOpen;
+  const keyboardFixed = isMobile && loaded && mobilePlayBarOpen && !isLegalPage;
   const mobileBarHeight =
     mobileInputMode === 'letters' ? 'pb-[18.5rem]' : 'pb-52';
 
@@ -114,7 +120,15 @@ export default function App() {
       )}
 
       {(!isMobile || !loaded) && <SeoSection compact={isMobile} />}
+
+      {keyboardFixed && <SiteFooter compact />}
     </div>
+  );
+
+  const pageContent = isLegalPage ? (
+    page === 'privacy' ? <PrivacyPage /> : <ContactPage />
+  ) : (
+    mainContent
   );
 
   return (
@@ -130,10 +144,12 @@ export default function App() {
         <Header loaded={loaded} loading={loading} compact={isMobile && loaded} />
 
         <main className="mx-auto w-full flex-1 px-3 py-3 sm:px-4 sm:py-8">
-          {isMobile ? (
-            <div className="mx-auto max-w-lg">{mainContent}</div>
+          {isLegalPage ? (
+            <div className="mx-auto max-w-lg">{pageContent}</div>
+          ) : isMobile ? (
+            <div className="mx-auto max-w-lg">{pageContent}</div>
           ) : (
-            <PageAdLayout>{mainContent}</PageAdLayout>
+            <PageAdLayout>{pageContent}</PageAdLayout>
           )}
         </main>
 
@@ -161,13 +177,7 @@ export default function App() {
           </button>
         )}
 
-        {!keyboardFixed && (
-          <footer className="border-t border-white/5 py-6 pb-safe sm:py-8">
-            <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
-              <p className="text-sm text-stone-400">Web Harmonium — Play Harmonium Online Free</p>
-            </div>
-          </footer>
-        )}
+        {(isLegalPage || !keyboardFixed) && <SiteFooter />}
       </div>
     </div>
   );

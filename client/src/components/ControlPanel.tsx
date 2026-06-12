@@ -114,26 +114,33 @@ export function ControlPanel({
         </div>
 
         {/* Reverb */}
-        <div className={`flex items-center justify-between bg-white/[0.03] ring-1 ring-white/6 ${compact ? 'rounded-xl p-3' : 'rounded-2xl p-5'}`}>
-          <div>
+        <div
+          className={`flex items-center justify-between gap-4 bg-white/[0.03] ring-1 ring-white/6 ${
+            compact ? 'col-span-2 rounded-xl p-3' : 'rounded-2xl p-5'
+          }`}
+        >
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <Layers className="h-4 w-4 text-harmony-500" />
+              <Layers className="h-4 w-4 shrink-0 text-harmony-500" />
               <p className={`font-medium text-stone-200 ${compact ? 'text-xs' : 'text-sm'}`}>Reverb</p>
             </div>
-            {!compact && <p className="mt-1 text-xs text-stone-500">Spacious harmonium resonance</p>}
+            {!compact && (
+              <p className="mt-1 text-xs text-stone-500">Spacious harmonium resonance</p>
+            )}
           </div>
           <button
             type="button"
             role="switch"
             aria-checked={settings.reverb}
+            aria-label="Toggle reverb"
             onClick={() => onChange('reverb', !settings.reverb)}
-            className={`relative h-8 w-14 rounded-full transition-colors ${
+            className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-harmony-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 ${
               settings.reverb ? 'bg-harmony-500' : 'bg-stone-700'
             }`}
           >
             <span
-              className={`absolute top-1 left-1 h-6 w-6 rounded-full bg-white shadow-md transition-transform ${
-                settings.reverb ? 'translate-x-6' : 'translate-x-0'
+              className={`pointer-events-none block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-200 ease-in-out ${
+                settings.reverb ? 'translate-x-5' : 'translate-x-0'
               }`}
             />
           </button>

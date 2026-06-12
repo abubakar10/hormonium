@@ -1,4 +1,4 @@
-import { Loader2, Music2, Volume2 } from 'lucide-react';
+import { Loader2, Music2, ShieldCheck, Volume2 } from 'lucide-react';
 
 interface LoadModuleProps {
   loading: boolean;
@@ -38,7 +38,22 @@ export function LoadModule({ loading, error, onLoad }: LoadModuleProps) {
             <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/5 px-3 py-1.5">
               Works offline after load
             </span>
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/5 px-3 py-1.5">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+              No signup needed
+            </span>
           </div>
+
+          <p className="mt-4 text-xs text-stone-500">
+            Tap once to load — then play.{' '}
+            <a href="/privacy" className="text-stone-400 underline-offset-2 hover:text-harmony-400 hover:underline">
+              Privacy
+            </a>
+            {' · '}
+            <a href="/contact" className="text-stone-400 underline-offset-2 hover:text-harmony-400 hover:underline">
+              Contact
+            </a>
+          </p>
 
           {error && (
             <p className="mt-4 rounded-lg bg-red-500/10 px-4 py-2 text-sm text-red-400 ring-1 ring-red-500/20">
