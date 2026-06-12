@@ -8,6 +8,7 @@ interface PianoKeyboardProps {
   disabled?: boolean;
   isMobile?: boolean;
   fixed?: boolean;
+  embedded?: boolean;
   onNoteOn: (midiNote: number) => void;
   onNoteOff: (midiNote: number) => void;
 }
@@ -19,6 +20,7 @@ export function PianoKeyboard({
   disabled,
   isMobile,
   fixed,
+  embedded,
   onNoteOn,
   onNoteOff,
 }: PianoKeyboardProps) {
@@ -64,7 +66,7 @@ export function PianoKeyboard({
     [onNoteOff]
   );
 
-  const keyHeight = fixed ? 'h-[8.5rem]' : isMobile ? 'h-40' : 'h-48 sm:h-56';
+  const keyHeight = fixed || embedded ? 'h-[8.5rem]' : isMobile ? 'h-40' : 'h-48 sm:h-56';
 
   const keyboardInner = (
     <div className={`relative flex w-full ${keyHeight}`}>
@@ -76,7 +78,7 @@ export function PianoKeyboard({
             type="button"
             aria-label={`Play note ${key.label || key.keyBinding}`}
             className={`piano-key group relative z-0 min-w-0 flex-1 flex-col items-center justify-end rounded-b-lg border border-stone-300/25 bg-gradient-to-b from-stone-50 to-stone-200 shadow-sm transition-all duration-75 select-none ${
-              fixed ? 'mx-px pb-2 pt-1' : isMobile ? 'mx-px pb-3 pt-1' : 'mx-px pb-3'
+              fixed || embedded ? 'mx-px pb-2 pt-1' : isMobile ? 'mx-px pb-3 pt-1' : 'mx-px pb-3'
             } flex ${
               isActive
                 ? 'z-10 -translate-y-0.5 from-harmony-50 to-harmony-200 shadow-md shadow-harmony-500/25'
@@ -90,13 +92,13 @@ export function PianoKeyboard({
             {key.label && (
               <span
                 className={`font-bold leading-none text-blue-600 ${
-                  fixed ? 'mb-0.5 text-[9px]' : isMobile ? 'mb-0.5 text-[10px]' : 'mb-1 text-xs sm:text-sm'
+                  fixed || embedded ? 'mb-0.5 text-[9px]' : isMobile ? 'mb-0.5 text-[10px]' : 'mb-1 text-xs sm:text-sm'
                 }`}
               >
                 {key.label}
               </span>
             )}
-            {!isMobile && !fixed && (
+            {!isMobile && !fixed && !embedded && (
               <kbd className="rounded bg-stone-900/10 px-1 py-0.5 font-mono text-[9px] text-stone-500 sm:text-[10px]">
                 {key.keyBinding}
               </kbd>
@@ -132,6 +134,14 @@ export function PianoKeyboard({
       })}
     </div>
   );
+
+  if (embedded) {
+    return (
+      <div className={disabled ? 'pointer-events-none opacity-40' : ''}>
+        {keyboardInner}
+      </div>
+    );
+  }
 
   if (fixed) {
     return (

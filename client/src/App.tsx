@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { Piano } from 'lucide-react';
 import { AD_SLOTS } from './ads/config';
 import { AdSenseScript } from './ads/AdSenseScript';
 import { AdUnit } from './ads/AdUnit';
@@ -7,6 +8,7 @@ import { ControlPanel } from './components/ControlPanel';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { LoadModule } from './components/LoadModule';
+import { MobilePlayBar, type MobileInputMode } from './components/MobilePlayBar';
 import { PianoKeyboard } from './components/PianoKeyboard';
 import { PresetsPanel } from './components/PresetsPanel';
 import { SeoSection } from './components/SeoSection';
@@ -54,10 +56,14 @@ export default function App() {
     enabled: loaded,
   });
 
-  const keyboardFixed = isMobile && loaded;
+  const [mobileInputMode, setMobileInputMode] = useState<MobileInputMode>('piano');
+  const [mobilePlayBarOpen, setMobilePlayBarOpen] = useState(true);
+  const keyboardFixed = isMobile && loaded && mobilePlayBarOpen;
+  const mobileBarHeight =
+    mobileInputMode === 'letters' ? 'pb-[18.5rem]' : 'pb-52';
 
   const mainContent = (
-    <div className={`space-y-5 sm:space-y-10 ${keyboardFixed ? 'pb-44' : ''}`}>
+    <div className={`space-y-5 sm:space-y-10 ${keyboardFixed ? mobileBarHeight : ''}`}>
       {!(isMobile && loaded) && (
         <HeroSection loaded={loaded} isMobile={isMobile} />
       )}
@@ -132,16 +138,27 @@ export default function App() {
         </main>
 
         {keyboardFixed && (
-          <PianoKeyboard
+          <MobilePlayBar
+            mode={mobileInputMode}
+            onModeChange={setMobileInputMode}
             keys={keyboardLayout}
             activeNotes={activeNotes}
             transpose={settings.transpose}
-            disabled={!loaded}
-            isMobile
-            fixed
             onNoteOn={playNote}
             onNoteOff={stopNote}
+            onClose={() => setMobilePlayBarOpen(false)}
           />
+        )}
+
+        {isMobile && loaded && !mobilePlayBarOpen && (
+          <button
+            type="button"
+            onClick={() => setMobilePlayBarOpen(true)}
+            className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full bg-harmony-600 px-5 py-3 text-sm font-semibold text-stone-950 shadow-lg shadow-harmony-600/30 transition active:scale-95"
+          >
+            <Piano className="h-4 w-4" />
+            Open Keyboard
+          </button>
         )}
 
         {!keyboardFixed && (
