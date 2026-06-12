@@ -1,0 +1,21 @@
+{
+  "name": "Web Harmonium — Play Harmonium Online",
+  "short_name": "Web Harmonium",
+  "description": "Play harmonium online free. Real Indian harmonium sound in your browser.",
+  "start_url": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
+  "background_color": "#0c0a09",
+  "theme_color": "#e88b1a",
+  "orientation": "any",
+  "categories": ["music", "entertainment"],
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

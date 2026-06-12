@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --color-harmony-50: #fef9ee;
+  --color-harmony-100: #fdf0d4;
+  --color-harmony-200: #f9deaa;
+  --color-harmony-300: #f4c574;
+  --color-harmony-400: #eea63c;
+  --color-harmony-500: #e88b1a;
+  --color-harmony-600: #d97010;
+  --color-harmony-700: #b45410;
+  --color-harmony-800: #904315;
+  --color-harmony-900: #753814;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  background: #0c0a09;
+  color: #e7e5e4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Safe area for notched phones (iPhone, etc.) */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Piano keys — prevent zoom & ghost clicks on mobile */
+.piano-key {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Horizontal keyboard scroll on mobile */
+.keyboard-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #44403c transparent;
+}
+
+.keyboard-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.keyboard-scroll::-webkit-scrollbar-thumb {
+  background: #57534e;
+  border-radius: 4px;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* Keyboard hint styling */
+kbd {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+}
+
+/* Custom range slider */
+input[type='range'].harmony-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--color-harmony-500) 0%,
+    var(--color-harmony-500) var(--progress, 30%),
+    #292524 var(--progress, 30%),
+    #292524 100%
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+input[type='range'].harmony-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-harmony-400), var(--color-harmony-600));
+  border: 2px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type='range'].harmony-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+input[type='range'].harmony-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-harmony-400), var(--color-harmony-600));
+  border: 2px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+/* Focus visible for accessibility */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-harmony-500);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(232, 139, 26, 0.3);
+  color: #fff;
+}

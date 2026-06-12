@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://webharmonium.netlify.app/sitemap.xml
