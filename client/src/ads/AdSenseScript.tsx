@@ -7,6 +7,7 @@ export function AdSenseScript() {
   useEffect(() => {
     if (!adsEnabled || !ADSENSE_CLIENT) return;
     if (document.getElementById(SCRIPT_ID)) return;
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
 
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
