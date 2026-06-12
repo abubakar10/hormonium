@@ -23,8 +23,8 @@ export function LoadModule({ loading, error, onLoad }: LoadModuleProps) {
             Start Online Harmonium Play
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-stone-400">
-            Load the real Indian harmonium sample to begin. On mobile you can then
-            use your phone&apos;s keyboard to play — just like a laptop.
+            Load the real Indian harmonium sample to begin. Takes just a few seconds —
+            then tap the keys to play harmonium online.
           </p>
 
           <div className="mt-5 flex flex-wrap justify-center gap-3 text-xs text-stone-500">
