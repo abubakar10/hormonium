@@ -7,12 +7,15 @@ import { ControlPanel } from './components/ControlPanel';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { LoadModule } from './components/LoadModule';
+import { MobilePhoneKeyboard } from './components/MobilePhoneKeyboard';
+import { MobilePlayChooser } from './components/MobilePlayChooser';
 import { PianoKeyboard } from './components/PianoKeyboard';
 import { PresetsPanel } from './components/PresetsPanel';
 import { SeoSection } from './components/SeoSection';
 import { useHarmonium } from './hooks/useHarmonium';
 import { useIsMobile } from './hooks/useIsMobile';
 import { useMidi } from './hooks/useMidi';
+import { useMobilePlayMode } from './hooks/useMobilePlayMode';
 
 export default function App() {
   const isMobile = useIsMobile();
@@ -31,6 +34,11 @@ export default function App() {
     stopNote,
     loadHarmonium,
   } = useHarmonium();
+
+  const { mode: mobileMode, selectMode, clearMode, showChooser } = useMobilePlayMode(
+    isMobile,
+    loaded
+  );
 
   const handleMidiNoteOn = useCallback(
     (midiNote: number) => playNote(midiNote),
@@ -54,15 +62,17 @@ export default function App() {
     enabled: loaded,
   });
 
-  const keyboardFixed = isMobile && loaded;
+  const mobileTouchPiano = isMobile && loaded && mobileMode === 'touch-piano';
+  const mobilePhoneKeyboard = isMobile && loaded && mobileMode === 'phone-keyboard';
+  const mobileBottomBar = mobileTouchPiano || mobilePhoneKeyboard;
+  const mainBottomPadding = mobileBottomBar ? (mobilePhoneKeyboard ? 'pb-52' : 'pb-44') : '';
 
   const mainContent = (
-    <div className={`space-y-5 sm:space-y-10 ${keyboardFixed ? 'pb-44' : ''}`}>
+    <div className={`space-y-5 sm:space-y-10 ${mainBottomPadding}`}>
       {!(isMobile && loaded) && (
         <HeroSection loaded={loaded} isMobile={isMobile} />
       )}
 
-      {/* Mobile banner ad — below hero, above harmonium */}
       {isMobile && (
         <div className="ad-mobile-banner">
           <AdUnit slot={AD_SLOTS.mobile} format="banner" label="Mobile banner ad" />
@@ -73,7 +83,10 @@ export default function App() {
         <LoadModule loading={loading} error={loadError} onLoad={loadHarmonium} />
       )}
 
-      {!keyboardFixed && (
+      {showChooser && <MobilePlayChooser onSelect={selectMode} />}
+
+      {/* Desktop + mobile before mode chosen: piano in page */}
+      {!mobileBottomBar && !showChooser && (
         <PianoKeyboard
           keys={keyboardLayout}
           activeNotes={activeNotes}
@@ -85,7 +98,7 @@ export default function App() {
         />
       )}
 
-      {loaded && (
+      {loaded && !showChooser && (
         <div className="space-y-5 rounded-2xl bg-white/[0.02] p-3 ring-1 ring-white/5 sm:space-y-8 sm:p-8">
           <ControlPanel
             settings={settings}
@@ -102,7 +115,6 @@ export default function App() {
         </div>
       )}
 
-      {/* In-content ad — desktop only, between controls and FAQ */}
       {!isMobile && (
         <div className="ad-content-banner">
           <AdUnit slot={AD_SLOTS.footer} format="banner" label="Content banner ad" />
@@ -133,12 +145,11 @@ export default function App() {
           )}
         </main>
 
-        {keyboardFixed && (
+        {mobileTouchPiano && (
           <PianoKeyboard
             keys={keyboardLayout}
             activeNotes={activeNotes}
             transpose={settings.transpose}
-            disabled={!loaded}
             isMobile
             fixed
             onNoteOn={playNote}
@@ -146,7 +157,16 @@ export default function App() {
           />
         )}
 
-        {!keyboardFixed && (
+        {mobilePhoneKeyboard && (
+          <MobilePhoneKeyboard
+            activeNotes={activeNotes}
+            onNoteOn={playNote}
+            onNoteOff={stopNote}
+            onSwitchMode={clearMode}
+          />
+        )}
+
+        {!mobileBottomBar && (
           <footer className="border-t border-white/5 py-6 pb-safe sm:py-8">
             <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
               <p className="text-sm text-stone-400">Web Harmonium — Play Harmonium Online Free</p>

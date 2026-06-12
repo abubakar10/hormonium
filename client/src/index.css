@@ -144,6 +144,21 @@ body {
   margin: 0 auto;
 }
 
+/* Hidden but focusable input for mobile OS keyboard */
+.mobile-keyboard-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
 /* Keyboard hint styling */
 kbd {
   font-family: ui-monospace, 'Cascadia Code', monospace;
